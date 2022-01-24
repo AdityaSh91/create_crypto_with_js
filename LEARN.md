@@ -10,13 +10,13 @@ A prerequisite for the quest is knowing the basics of React (a JS frontend frame
 
 Moving forward, you need to have a working installation of node and npm (Node Package Manager) is used to manage packages. Having a code editor like VS Code will be very helpful during the development of the application. 
 
-We will be calling our application solCurrency. Open the terminal from your desired folder location and write down the following command:
+We will be calling our application solcurrency. Open the terminal from your desired folder location and write down the following command:
 
 ```
-npx create-react-app solCurrency
+npx create-react-app solcurrency
 ```
 
-After sometime, a whole react-boilerplate project is created which can be run locally using the command:
+After sometime, a whole react-boilerplate project is created. Navigate inside this project and then locally using the command:
 ```
 npm start
 ```
@@ -67,22 +67,34 @@ The spl-token library is also a typescript library by Solaba Labs to perform the
 
 Like your personal wallets, there are various software wallets which can hold your tokens. We will be using a crypto wallet called phantom wallet in this quest. 
 
-To add Phantom wallet to your browser, visit https://phantom.app/ and click on “Add to Chrome/Firefox”. Once the extension is installed, click on “Create a new wallet”. It’ll ask you to create a new password for your Phantom wallet extension and ask you to copy the “seed phrase”. Store this seed phrase somewhere safe and never share this seed phrase with anyone. 
-This seed phrase is a string that is used to give full access to sending and receiving tokens from your wallet. In case you change your browser or laptop, you can use this seed phrase to recover your original wallet. Anyone who has your seed phrase, can access your wallet and then perform transactions through it - so keep it safe!
+Here's a link to their official docs - https://phantom.app/help/installing-phantom . It only takes a few minutes to set up. 
 
-Every wallet on the Solana blockchain has a unique identifier, called the public key (shortened as pubkey) which is a cryptographic string of alpha-numeric characters. This pubkey can be universally shared with anyone and acts as a “receiving address” for your wallet. To check the public key and the balance of our newly created wallet, use the following commands.
+IMPORTANT : The seed phrase is a string that is used to give full access to sending and receiving tokens from your wallet. In case you change your browser or laptop, you can use this seed phrase to recover your original wallet. Anyone who has your seed phrase, can access your wallet and then perform transactions through it - so keep it safe!
 
-The original Solana blockchain where the actual transactions happen is known as the mainnet. To perform any transaction on the Solana blockchain, you’re charged a transaction fee. These payments happen in a currency called SOL. Solana also maintains clusters called devnet and testnet. Devnet is the replica of the Solana’s mainnet, and serves as a playground for anyone who wants to try out the features of Solana. Cryptos that reside in devnet don’t have any value.
-Since in this quest we are transacting in devnet, we can change the network in Phantom to devnet. To do so, click on the cog wheel in the bottom right corner of your Phantom wallet, click on “Change network” and select “Devnet”.
+Every wallet on the Solana blockchain has a unique identifier, called the public key (shortened as pubkey) which is a cryptographic string of alpha-numeric characters. This pubkey can be universally shared with anyone and acts as a “receiving address” for your wallet. You can find out the wallet address of your Phantom wallet by clicking on the wallet’s name. This wallet address is the public address of your wallet that can be used to receive funds.
+
+
+This also means that ANYONE can query a public blockchain with your public wallet address and see your balance, transactions etc. While there are sophisiticated privacy solutions being built, a good measure is using multiple wallets with low or just enough balance for interacting with most products and people, and keeping most of your holdings in your main wallet which only interact with these "burner wallets" of yours. You can query the blockchain yourself by using an explorer like https://solscan.io/ or more sophisticated query tools like https://dune.xyz/browse/dashboards.
+
+As you've seen in the previous quests, we'll be switching to the solana devnet for the rest of this quest. 
+
+The images below show your phantom wallet extension and public wallet address & how to switch to devnet using the settings gear at the bottom right. 
 
 ![3](https://github.com/altsam/create_crypto_with_js/raw/main/learn_assets/3.png) ![4](https://github.com/altsam/create_crypto_with_js/raw/main/learn_assets/4.png)
 
-You can find out the wallet address of your Phantom wallet by clicking on the wallet’s name. This wallet address is the public address of your wallet that can be used to receive funds.
+(Extra Reading...) 
+
+It seems extremely likely that wallets will become the web3 "identity" and "auth" mechanisms. Connecting a wallet to a product/protocol will allow them to verify you based on some on-chain activity (holding an NFT/tokens , signing a transaction etc). These also get associated with verified names via naming service protocols like ENS (https://decrypt.co/resources/ethereum-name-service-ens-explained-guide-learn) or SNS (https://bonfida.medium.com/an-introduction-to-the-solana-name-service-5e0134dbf56e)
+
+At some point all apps will support a "connect wallet" or "sign in with ethereum / solana / polygon" kind of experience. Products like https://context.app/ are  building social discovery based on wallet address (e.g. what new NFTs are the punks minting). People are also building social primitives on solana, like https://www.yelllow.xyz/  by https://twitter.com/yelllownate
 
 ## Connecting with Phantom Wallet
 
-Let’s add a “connect to wallet” functionality to our application, that’ll allow your users to connect to solCurrency through their Phantom wallets.
+Let’s add a “connect to wallet” functionality to our application, that’ll allow your users to connect to solcurrency through their Phantom wallets.
 We’ll be creating a useState hook to store information regarding whether the wallet is connected or not, and we’ll be creating another state (called provider) to store the wallet info with which the user logs in. A loading state is also created.
+
+Paste the following code into the app.js file
+
 ```
 const [walletConnected,setWalletConnected]=useState(false);
 const [provider, setProvider] = useState();
@@ -276,6 +288,9 @@ At the end, we store the publicKey of the creatorToken to recreate the coin whil
 In the Phantom wallet you can see, one unknown token has been created.
 
 ![7](https://github.com/altsam/create_crypto_with_js/raw/main/learn_assets/7.png)
+
+
+You can also go to a block explorer like https://solscan.io/ , paste your public wallet address and check your balance there. 
 
 ## Minting more tokens
 
